@@ -18,6 +18,7 @@ class TicTacToe
 
     def input_to_index(input)
         input.to_i-1
+        
     end
 
     def move(index, token = "x")
@@ -33,7 +34,7 @@ class TicTacToe
     end
 
     def turn
-        input = gets
+        input = gets.chomp  #gets collects user input
         index = input_to_index(input)
         if valid_move?(index)
             player = current_player
@@ -49,12 +50,16 @@ class TicTacToe
     end
 
     def current_player
-        turn_count % 2 == 0 ? "X" : "O"
+        if turn_count.even?                      
+            "X"
+        else
+            "O"
+        end
     end
 
     def won?
-        WIN_COMBINATIONS.detect do |combo|
-            if @board[combo[0]] == "X" && @board[combo[1]] == "X" && @board[combo[2]] == "X"
+        WIN_COMBINATIONS.detect do |combo|             #iterates through each winning combination to detect if any of them have all X or all O
+            if @board[combo[0]] == "X" && @board[combo[1]] == "X" && @board[combo[2]] == "X"  
                 return combo
             elsif
                 @board[combo[0]] == "O" && @board[combo[1]] == "O" && @board[combo[2]] == "O"
@@ -64,7 +69,7 @@ class TicTacToe
     end
 
     def full?
-        @board.all? {|token| token == "O" || token == "X"}
+        @board.all? {|token| token != " "}                   
     end
 
     def draw?
@@ -77,15 +82,15 @@ class TicTacToe
 
     def over?
         if draw? || won?
-            true
+           true
         else
-            false
+           false
         end
     end
 
     def winner
         if won?
-            @board[won?[1]]
+            @board[won?[1]]        #axxessing the winning comination return value from the won? method.
         end
     end
 
